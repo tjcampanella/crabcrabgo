@@ -1,12 +1,18 @@
-use std::{env, fs, io};
+use clap::Parser;
+use std::{fs, io};
+
+/// Local Search Engine for txt and pdf files
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Directory path to index
+    #[arg(short, long)]
+    path: String,
+}
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    if args.len() > 1 {
-        read_dir_recursive(&args[1]).expect("Expects valid path");
-    } else {
-        eprintln!("Expects a path command line argument")
-    }
+    let args = Args::parse();
+    read_dir_recursive(&args.path).expect("Path is valid");
 }
 
 fn read_dir_recursive(dir_path: &str) -> io::Result<()> {
