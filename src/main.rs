@@ -1,7 +1,12 @@
-use std::{fs, io};
+use std::{env, fs, io};
 
 fn main() {
-    read_dir_recursive("/Users/tjcampanella/Desktop").expect("works");
+    let args: Vec<String> = env::args().collect();
+    if args.len() > 1 {
+        read_dir_recursive(&args[1]).expect("Expects valid path");
+    } else {
+        eprintln!("Expects a path command line argument")
+    }
 }
 
 fn read_dir_recursive(dir_path: &str) -> io::Result<()> {
